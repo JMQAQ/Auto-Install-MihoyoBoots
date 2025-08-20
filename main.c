@@ -5,11 +5,8 @@
 #pragma comment(lib, "wininet.lib")  
 #pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" ) 
 
-BOOL ClickButton(const char* windowTitle, int x, int y) {
-	HWND hwnd = FindWindowA(NULL, windowTitle);
-	if (hwnd == NULL) {
-		return -4;
-	}
+int ClickButton(int x, int y) {
+	HWND hwnd = FindWindowA("Qt51517QWindowIcon", NULL);
 
 	SetForegroundWindow(hwnd);
 	Sleep(100);
@@ -25,21 +22,20 @@ BOOL ClickButton(const char* windowTitle, int x, int y) {
 	mouse_event(MOUSEEVENTF_LEFTDOWN, absoluteX, absoluteY, 0, 0);
 	Sleep(50);
 	mouse_event(MOUSEEVENTF_LEFTUP, absoluteX, absoluteY, 0, 0);
-
-	return TRUE;
+	return 0;
 }
 
-int main() {
+int DownLoad(const char* Url) {
 	HINTERNET hInternet, hFile;
 	DWORD bytesRead;
 	char buffer[4096];
 
-	hInternet = InternetOpen("Dowloder/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	hInternet = InternetOpen("Downloder/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (hInternet == NULL) {
 		return -1;
 	}
 
-	hFile = InternetOpenUrl(hInternet,"https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup317", NULL, 0, INTERNET_FLAG_RELOAD, 0);
+	hFile = InternetOpenUrl(hInternet, Url, NULL, 0, INTERNET_FLAG_RELOAD, 0);
 	if (hFile == NULL) {
 		InternetCloseHandle(hInternet);
 		return -2;
@@ -60,7 +56,11 @@ int main() {
 	fclose(fp);
 	InternetCloseHandle(hFile);
 	InternetCloseHandle(hInternet);
+	return 0;
+}
 
+int main() {
+	DownLoad("https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup317");
 	BlockInput(TRUE);
 
 	ShellExecute(
@@ -74,12 +74,12 @@ int main() {
 
 	for (int i = 0; i < 10; i++) {
 		Sleep(500);
-		HWND hwnd = FindWindow(NULL, "米哈游启动器 安装程序");
+		HWND hwnd = FindWindow("Qt51517QWindowIcon", NULL);
 		if (hwnd != NULL) break;
 	}
 
-	ClickButton("米哈游启动器 安装程序", 400, 300);
-	ClickButton("米哈游启动器 安装程序", 500, 300);
+	ClickButton(400, 300);
+	ClickButton(325, 220);
 
 
 	BlockInput(FALSE);
