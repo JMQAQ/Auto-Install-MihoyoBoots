@@ -8,7 +8,7 @@
 BOOL ClickButton(const char* windowTitle, int x, int y) {
 	HWND hwnd = FindWindowA(NULL, windowTitle);
 	if (hwnd == NULL) {
-		return -1;
+		return -4;
 	}
 
 	SetForegroundWindow(hwnd);
@@ -34,22 +34,22 @@ int main() {
 	DWORD bytesRead;
 	char buffer[4096];
 
-	hInternet = InternetOpen("Downloader/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	hInternet = InternetOpen("Dowloder/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (hInternet == NULL) {
 		return -1;
 	}
 
-	hFile = InternetOpenUrl(hInternet, "https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup317", NULL, 0, INTERNET_FLAG_RELOAD, 0);
+	hFile = InternetOpenUrl(hInternet,"https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup317", NULL, 0, INTERNET_FLAG_RELOAD, 0);
 	if (hFile == NULL) {
 		InternetCloseHandle(hInternet);
-		return -1;
+		return -2;
 	}
 
 	FILE* fp = fopen("1.exe", "wb");
 	if (fp == NULL) {
 		InternetCloseHandle(hFile);
 		InternetCloseHandle(hInternet);
-		return -1;
+		return -3;
 	}
 
 	while (InternetReadFile(hFile, buffer, sizeof(buffer) - 1, &bytesRead) && bytesRead > 0) {
