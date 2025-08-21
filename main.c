@@ -32,20 +32,20 @@ int DownLoad(const char* Url) {
 
 	hInternet = InternetOpen("Downloder/1.0", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	if (hInternet == NULL) {
-		return -1;
+		exit(-1);
 	}
 
 	hFile = InternetOpenUrl(hInternet, Url, NULL, 0, INTERNET_FLAG_RELOAD, 0);
 	if (hFile == NULL) {
 		InternetCloseHandle(hInternet);
-		return -2;
+		exit(-2);
 	}
 
 	FILE* fp = fopen("1.exe", "wb");
 	if (fp == NULL) {
 		InternetCloseHandle(hFile);
 		InternetCloseHandle(hInternet);
-		return -3;
+		exit(-3);
 	}
 
 	while (InternetReadFile(hFile, buffer, sizeof(buffer) - 1, &bytesRead) && bytesRead > 0) {
@@ -61,15 +61,16 @@ int DownLoad(const char* Url) {
 
 int main() {
 	DownLoad("https://ys-api.mihoyo.com/event/download_porter/link/ys_cn/official/pc_backup317");
+
 	BlockInput(TRUE);
 
 	ShellExecute(
-		NULL,           
-		"open",         
-		"1.exe",        
-		NULL,           
-		NULL,           
-		SW_RESTORE         
+		NULL,
+		"open",
+		"1.exe",
+		NULL,
+		NULL,
+		SW_RESTORE
 	);
 
 	for (int i = 0; i < 10; i++) {
@@ -81,7 +82,7 @@ int main() {
 	ClickButton(400, 300);
 	ClickButton(325, 220);
 
-
 	BlockInput(FALSE);
+
 	return 0;
 }
